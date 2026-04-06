@@ -1,0 +1,102 @@
+﻿# =========================
+# .NET / C#
+# =========================
+
+bin/
+obj/
+out/
+publish/
+
+*.user
+*.userosscache
+*.suo
+*.cache
+*.pdb
+*.mdb
+
+*.log
+
+# =========================
+# Rider / JetBrains
+# =========================
+
+.idea/
+*.sln.iml
+
+# =========================
+# Visual Studio (na przyszłość)
+# =========================
+
+.vs/
+*.vcxproj.user
+*.csproj.user
+*.dbmdl
+
+# =========================
+# NuGet
+# =========================
+
+packages/
+*.nupkg
+*.snupkg
+
+# =========================
+# Build
+# =========================
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+
+# =========================
+# OS files
+# =========================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Test Results
+# =========================
+
+TestResults/
+*.trx
+
+# =========================
+# Dotnet tools
+# =========================
+
+.dotnet/
+
+# =========================
+# Rider workspace
+# =========================
+
+*.DotSettings.user
+_ReSharper*/
+*.DotSettings
+
+# =========================
+# Logs
+# =========================
+
+logs/
+*.log
+
+# =========================
+# Temporary files
+# =========================
+
+*.tmp
+*.temp
+*.bak
+
+# =========================
+# Coverage
+# =========================
+
+coverage/
+*.coverage
+*.coveragexml
