@@ -66,7 +66,13 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie04_PierwszyPrzedmiotAnalityczny()
     {
-        throw Niezaimplementowano(nameof(Zadanie04_PierwszyPrzedmiotAnalityczny));
+        return
+        [
+            DaneUczelni.Przedmioty
+                .Where(p => p.Kategoria == "Analytics")
+                .Select(p => $"{p.Nazwa}, {p.DataStartu}")
+                .FirstOrDefault("taki przedmiot nie istnieje")
+        ];
     }
 
     /// <summary>
@@ -83,7 +89,7 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie05_CzyIstniejeNieaktywneZapisanie()
     {
-        throw Niezaimplementowano(nameof(Zadanie05_CzyIstniejeNieaktywneZapisanie));
+        return [DaneUczelni.Zapisy.Any(z => !z.CzyAktywny) ? "Tak" : "Nie"];
     }
 
     /// <summary>
