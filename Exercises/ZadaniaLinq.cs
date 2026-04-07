@@ -308,7 +308,15 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie16_NajwyzszaOcenaKazdegoStudenta()
     {
-        throw Niezaimplementowano(nameof(Zadanie16_NajwyzszaOcenaKazdegoStudenta));
+        return DaneUczelni.Zapisy
+            .Where(z => z.OcenaKoncowa != null)
+            .Join(
+                DaneUczelni.Studenci,
+                z => z.StudentId,
+                s => s.Id,
+                (z, s) => new { s.Imie, s.Nazwisko, z.OcenaKoncowa })
+            .GroupBy(zs => new { zs.Imie, zs.Nazwisko })
+            .Select(gr => $"{gr.Key.Imie}, {gr.Key.Nazwisko}, {gr.Max(z => z.OcenaKoncowa)}");
     }
 
     /// <summary>
@@ -326,7 +334,16 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem()
     {
-        throw Niezaimplementowano(nameof(Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem));
+        return DaneUczelni.Zapisy
+            .Where(z => z.CzyAktywny)
+            .Join(
+                DaneUczelni.Studenci,
+                z => z.StudentId,
+                s => s.Id,
+                (z, s) => new { s.Imie, s.Nazwisko })
+            .GroupBy(zs => zs)
+            .Where(zs => zs.Count() > 1)
+            .Select(zs => $"{zs.Key.Imie}, {zs.Key.Nazwisko}, {zs.Count()}");
     }
 
     /// <summary>
@@ -343,7 +360,17 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Wyzwanie02_PrzedmiotyStartujaceWKwietniuBezOcenKoncowych()
     {
-        throw Niezaimplementowano(nameof(Wyzwanie02_PrzedmiotyStartujaceWKwietniuBezOcenKoncowych));
+        return DaneUczelni.Przedmioty
+            .Where(p => p.DataStartu.Month == 4 && p.DataStartu.Year == 2026)
+            .Join(
+                DaneUczelni.Zapisy,
+                p => p.Id,
+                z => z.PrzedmiotId,
+                (p, z) => new { p.Nazwa, z.OcenaKoncowa }
+            )
+            .GroupBy(zp => zp.Nazwa)
+            .Where(zp => zp.All(z => z.OcenaKoncowa == null))
+            .Select(zp => $"{zp.Key}");
     }
 
     /// <summary>
