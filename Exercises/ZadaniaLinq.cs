@@ -216,8 +216,8 @@ public sealed class ZadaniaLinq
                 DaneUczelni.Studenci,
                 z => z.StudentId,
                 s => s.Id,
-                (z, s) => new { z.PrzedmiotId, s.Imie, s.Nazwisko }
-            ).Join(
+                (z, s) => new { z.PrzedmiotId, s.Imie, s.Nazwisko })
+            .Join(
                 DaneUczelni.Przedmioty,
                 zs => zs.PrzedmiotId,
                 p => p.Id,
@@ -237,7 +237,14 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie13_GrupowanieZapisowWedlugPrzedmiotu()
     {
-        throw Niezaimplementowano(nameof(Zadanie13_GrupowanieZapisowWedlugPrzedmiotu));
+        return DaneUczelni.Zapisy
+            .Join(
+                DaneUczelni.Przedmioty,
+                z => z.PrzedmiotId,
+                p => p.Id,
+                (z, p) => p.Nazwa)
+            .GroupBy(zp => zp)
+            .Select(zp => $"{zp.Key},  {zp.Count()}");
     }
 
     /// <summary>
@@ -254,7 +261,15 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie14_SredniaOcenaNaPrzedmiot()
     {
-        throw Niezaimplementowano(nameof(Zadanie14_SredniaOcenaNaPrzedmiot));
+        return DaneUczelni.Zapisy
+            .Where(z => z.OcenaKoncowa != null)
+            .Join(
+                DaneUczelni.Przedmioty,
+                z => z.PrzedmiotId,
+                p => p.Id,
+                (z, p) => new { p.Nazwa, z.OcenaKoncowa })
+            .GroupBy(zp => zp.Nazwa)
+            .Select(zp => $"{zp.Key}, {zp.ToList().Average(g => g.OcenaKoncowa)}");
     }
 
     /// <summary>
@@ -270,7 +285,13 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie15_ProwadzacyILiczbaPrzedmiotow()
     {
-        throw Niezaimplementowano(nameof(Zadanie15_ProwadzacyILiczbaPrzedmiotow));
+        return DaneUczelni.Prowadzacy.Join(
+                DaneUczelni.Przedmioty,
+                t => t.Id,
+                s => s.ProwadzacyId,
+                (t, subj) => new { t.Imie, t.Nazwisko })
+            .GroupBy(ts => ts)
+            .Select(gr => $"{gr.Key.Imie}, {gr.Key.Nazwisko}, {gr.Count()}");
     }
 
     /// <summary>
