@@ -269,7 +269,7 @@ public sealed class ZadaniaLinq
                 p => p.Id,
                 (z, p) => new { p.Nazwa, z.OcenaKoncowa })
             .GroupBy(zp => zp.Nazwa)
-            .Select(zp => $"{zp.Key}, {zp.ToList().Average(g => g.OcenaKoncowa)}");
+            .Select(zp => $"{zp.Key}, {zp.Average(v => v.OcenaKoncowa)}");
     }
 
     /// <summary>
@@ -289,8 +289,8 @@ public sealed class ZadaniaLinq
                 DaneUczelni.Przedmioty,
                 t => t.Id,
                 s => s.ProwadzacyId,
-                (t, subj) => new { t.Imie, t.Nazwisko })
-            .GroupBy(ts => ts)
+                (t, s) => t)
+            .GroupBy(t => t)
             .Select(gr => $"{gr.Key.Imie}, {gr.Key.Nazwisko}, {gr.Count()}");
     }
 
@@ -335,14 +335,13 @@ public sealed class ZadaniaLinq
     public IEnumerable<string> Wyzwanie01_StudenciZWiecejNizJednymAktywnymPrzedmiotem()
     {
         return DaneUczelni.Zapisy
-            .Where(z => z.CzyAktywny)
             .Join(
                 DaneUczelni.Studenci,
                 z => z.StudentId,
                 s => s.Id,
-                (z, s) => new { s.Imie, s.Nazwisko })
-            .GroupBy(zs => zs)
-            .Where(zs => zs.Count() > 1)
+                (z, s) => new { s.Imie, s.Nazwisko, z.CzyAktywny })
+            .GroupBy(zs => new { zs.Imie, zs.Nazwisko })
+            .Where(zs => zs.Count(v => v.CzyAktywny) > 1)
             .Select(zs => $"{zs.Key.Imie}, {zs.Key.Nazwisko}, {zs.Count()}");
     }
 
